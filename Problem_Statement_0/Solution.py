@@ -3,6 +3,36 @@ N = 0
 W_Total = 0
 weights = []
 
+def maxf(L):
+    t = float('-inf')
+    for i in L:
+        if i > t:
+            t = i
+
+    return t
+
+def minf(L):
+    t = float('inf')
+    for i in L:
+        if i < t:
+            t = i
+            
+    return t
+
+def lenf(L):
+    c = 0
+    for i in L:
+        c += 1
+    return c
+
+def sortf(L,reverse = False):
+    for i in range(lenf(L)):
+        for j in range(i,lenf(L)):
+            if L[i] > L[j] and reverse == False:
+                L[i],L[j] = L[j],L[i] 
+            if L[i] < L[j] and reverse == True:
+                L[i],L[j] = L[j],L[i]
+
 def process_ship():
     global C, N, W_Total, weights
     C = float(input("Enter the capacity of the port: "))
@@ -22,8 +52,8 @@ if choice == "1":
     process_ship()
     print(f"Total shipment weight: {W_Total}")
     print(f"Average container weight: {W_Total / N if N > 0 else 0}")
-    print(f"Heaviest container: {max(weights)}")
-    print(f"Lightest container: {min(weights)}")
+    print(f"Heaviest container: {maxf(weights)}")
+    print(f"Lightest container: {minf(weights)}")
     print(f"Classification: {'heavy' if W_Total >= 200 else 'light'}")
     print(f"Port capacity: {C}")
     if W_Total <= C:
@@ -48,8 +78,8 @@ elif choice == "2" :
         choice = int(input("Enter your choice (1-8): "))
 
         if choice == 1:
-            weights.sort()
-            for i in range(len(weights)):
+            sortf(weights)
+            for i in range(lenf(weights)):
                 print(f"Container {i+1}: {weights[i]}")  
             print()
 
@@ -64,7 +94,7 @@ elif choice == "2" :
                     print("Invalid input. Please enter 'y' or 'n'.")
 
         if choice == 3:
-            for i in range(len(weights)):
+            for i in range(lenf(weights)):
                 print(f"Container {i+1}:{'*' * (int(weights[i] // 5))}")
             print()
             print("Each '*' represents 5 units.")
@@ -77,8 +107,8 @@ elif choice == "2" :
                 with open(name,'w') as f:
                     f.write(f"Total shipment weight: {W_Total}\n")
                     f.write(f"Average container weight: {W_Total / N if N > 0 else 0}\n")
-                    f.write(f"Heaviest container: {max(weights)}\n")
-                    f.write(f"Lightest container: {min(weights)}\n")
+                    f.write(f"Heaviest container: {maxf(weights)}\n")
+                    f.write(f"Lightest container: {minf(weights)}\n")
                     f.write(f"Classification: {'heavy' if W_Total >= 200 else 'light'}\n")
                     if W_Total <= C:
                         f.write("The shipment can be unloaded.\n")
@@ -102,8 +132,8 @@ elif choice == "2" :
             num = int(text.split('\n')[0])
             print(f"Total shipment weight: {W_Total}")
             print(f"Average container weight: {sum(weights_new) / num if num > 0 else 0}")
-            print(f"Heaviest container: {max(weights_new)}")
-            print(f"Lightest container: {min(weights_new)}")
+            print(f"Heaviest container: {maxf(weights_new)}")
+            print(f"Lightest container: {minf(weights_new)}")
             print(f"Classification: {'heavy' if sum(weights_new) >= 200 else 'light'}")
             print()
 
@@ -119,13 +149,13 @@ elif choice == "2" :
 
         if choice == 7:
             k = int(input("Enter the value of k: "))
-            if k <= len(weights):
+            if k <= lenf(weights):
                 temp = list(weights)
-                temp.sort(reverse = True)
+                sortf(temp,reverse = True)
                 print(f"The {k} {"st" if k == 1 else "nd" if k == 2 else "rd" if k == 3 else "th"} heaviest container has weight: {temp[k-1]}")
                 print()
             else:
-                print(f"Invalid Input. Only {len(temp)} containers exist.")
+                print(f"Invalid Input. Only {lenf(temp)} containers exist.")
                 print()
 
         if choice == 8:
